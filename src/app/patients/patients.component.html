@@ -1,10 +1,10 @@
-<table>
+<table appSortableTable (sorted)="onSorted($event)">
   <thead>
     <tr>
-      <th>Last Name</th>
+      <th app-sortable-column="lastName">Last Name</th>
       <th>First Name</th>
-      <th>Registration date</th>
-      <th>Doctor</th>
+      <th app-sortable-column="registeredDate">Registration date</th>
+      <th app-sortable-column="doctorFullName">Doctor</th>
       <th>Home</th>
     </tr>
   </thead>

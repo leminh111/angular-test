@@ -9,6 +9,8 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PatientsComponent } from './patients/patients.component';
 import { AddressPipe } from './address.pipe';
+import { SortableColumnComponent } from './sortable-column/sortable-column.component';
+import { SortableTableDirective } from './sortable-table.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { AddressPipe } from './address.pipe';
     LeftSidebarComponent,
     DashboardComponent,
     PatientsComponent,
-    AddressPipe
+    AddressPipe,
+    SortableColumnComponent,
+    SortableTableDirective
   ],
   imports: [
     BrowserModule,
