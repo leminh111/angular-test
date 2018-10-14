@@ -7,6 +7,8 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { PatientsComponent } from './patients/patients.component';
+import { AddressPipe } from './address.pipe';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HeaderComponent,
     FooterComponent,
     LeftSidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    PatientsComponent,
+    AddressPipe
   ],
   imports: [
     BrowserModule,

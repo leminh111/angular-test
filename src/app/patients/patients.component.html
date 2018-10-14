@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>Registration date</th>
+      <th>Doctor</th>
+      <th>Home</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let patient of patients">
+      <td>{{patient.lastName}}</td>
+      <td>{{patient.firstName}}</td>
+      <td>{{patient.registeredDate | date}}</td>
+      <td>{{patient.doctorFullName}}</td>
+      <td class="address-string">
+        <div [outerHTML]="patient.addresses | address"></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
