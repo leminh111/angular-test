@@ -6,13 +6,15 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    LeftSidebarComponent
+    LeftSidebarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

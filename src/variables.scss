@@ -1,0 +1,39 @@
+$header-height: 44px;
+$footer-height: 80px;
+$sidebar-width: 100px;
+
+$app-green: #0AE1AF;
+$app-red: #FF1455;
+$app-yellow: #F5CD00;
+$app-link-color: #3946e1;
+$app-dark: #1E2D41;
+$app-text-color: $app-dark;
+$app-dark-light: rgba(30, 45, 65, 0.24); // #c9cdd2
+$app-grey: rgba(30, 45, 65, 0.08); // #edeff0
+$app-grey-light: rgba(30, 45, 65, 0.04); // #f7f8f9
+$app-place-holder:rgba(30, 45, 65, 0.36);
+$app-label-color: rgba(30, 45, 65, 0.54);
+$app-border: $app-grey;
+$icon-font-path: "../assets/fonts";
+$font-family-base: 'Source Sans Pro',helvetica,serif;
+$font-family-heading: $font-family-base;
+$app-font-size-base: 14px;
+$app-font-size-base-small: 12px;
+$app-font-size-base-small-s: 10px;
+$app-font-size-base-large: 16px;
+$app-border-color: $app-grey;
+$app-border-color-validated: #5FBB5F;
+$app-border-radius: 4px;
+$app-input-bg: $app-grey-light;
+$app-error: #DB363A;
+$app-input-bg-error: rgba(219,54,58,0.08);
+$app-button-default: $app-grey-light;
+$app-button-primary: #4354e1;
+$app-button-primary-active: #3946e1;
+
+$container-box-padding-right: 24px;
+$popover-box-shadow: 0 8px 24px 0 rgba(0, 207, 255, 0.08), 0 8px 54px 0 rgba(30, 45, 65, 0.16);
+
+$technologyColor: #0AE1AF;
+$processColor: #FF1455;
+$behaviourColor: #F5AF00;

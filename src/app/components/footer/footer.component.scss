@@ -1,8 +1,12 @@
+@import "../../../variables";
+
 footer {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
+    height: $footer-height;
     background-color: black;
     color: white;
+    z-index: 10;
 }
