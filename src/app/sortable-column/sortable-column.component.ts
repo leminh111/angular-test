@@ -26,11 +26,9 @@ export class SortableColumnComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // subscribe to sort changes so we can react when other columns are sorted
     this.columnSortedSubscription = this.sortService.columnSorted$.subscribe(event => {
-      // reset this column's sort direction to hide the sort icons
       if (this.columnName !== event.sortColumn) {
-        this.sortDirection = SortDirectionEnum.ASC;
+        this.sortDirection = SortDirectionEnum.DESC;
       }
     });
   }

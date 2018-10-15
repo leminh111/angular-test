@@ -11,6 +11,7 @@ import { PatientsComponent } from './patients/patients.component';
 import { AddressPipe } from './address.pipe';
 import { SortableColumnComponent } from './sortable-column/sortable-column.component';
 import { SortableTableDirective } from './sortable-table.directive';
+import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SortableTableDirective } from './sortable-table.directive';
     PatientsComponent,
     AddressPipe,
     SortableColumnComponent,
-    SortableTableDirective
+    SortableTableDirective,
+    PatientDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,21 @@
+<div *ngIf="patient">
+  <h2>{{patient.name | uppercase}} Details</h2>
+  <div><span>id: </span>{{patient.id}}</div>
+  <div><span>Registration date: </span>{{patient.registeredDate}}</div>
+  <div><span>First name: </span>{{patient.firstName}}</div>
+  <div><span>Last name: </span>{{patient.lastName}}</div>
+  <div><span>Doctor: </span>{{patient.doctorFullName}}</div>
+  <div>
+    <span>Addresses:</span>
+    <div *ngFor="let address of patient.addresses">
+      <p><b>{{address.type}}</b></p>
+      <p>{{address.email}}</p>
+      <p>{{address.phone}}</p>
+      <p>{{address.street}}</p>
+      <!--TODO pipe for city, zipcode, country -->
+      <p>{{address.city}}</p>
+      <p>{{address.zipcode}}</p>
+      <p>{{address.country}}</p>
+    </div>
+  </div>
+</div>

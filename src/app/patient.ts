@@ -15,8 +15,16 @@ export class PatientWithDoctor {
     registeredDate: string;
     firstName: string;
     lastName: string;
-    doctor: number;
-    doctorDetail: Doctor;
-    doctorFullName: string;
+    doctor: Doctor;
     addresses: Address[];
+}
+
+export class PatientWithDoctorAndFullName {
+  id: number;
+  registeredDate: string;
+  firstName: string;
+  lastName: string;
+  doctor: Doctor;
+  doctorFullName: string;
+  addresses: Address[];
 }

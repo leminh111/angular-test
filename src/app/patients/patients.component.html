@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let patient of patients">
+    <tr *ngFor="let patient of patients" [routerLink]="['/patient', patient.id]">
       <td>{{patient.lastName}}</td>
       <td>{{patient.firstName}}</td>
       <td>{{patient.registeredDate | date}}</td>

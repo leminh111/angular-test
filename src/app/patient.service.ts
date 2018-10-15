@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Patient, PatientWithDoctor } from './patient';
-import { Doctor } from './doctor';
+import {Patient, PatientWithDoctor, PatientWithDoctorAndFullName} from './patient';
 import { PATIENTS } from './mock-patients';
+import { PATIENTS_WITH_DOCTORS } from './mock-patients-with-doctors';
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +18,19 @@ export class PatientService {
     return of(PATIENTS.find(patient => patient.id === id));
   }
 
-  // TODO Maybe need to define a new patient type
-  // TODO error handling
-  getPatientsWithDoctors(patients: Patient[], doctors: Doctor[]): PatientWithDoctor[] {
-    return patients.map(patient => {
-      const patientWithDoctor = {
-        id: patient.id,
-        registeredDate: patient.registeredDate,
-        firstName: patient.firstName,
-        lastName: patient.lastName,
-        doctor: patient.doctor,
-        doctorDetail: doctors.find(doctor => doctor.id === patient.doctor),
-        doctorFullName: '',
-        addresses: patient.addresses
-      };
-      patientWithDoctor.doctorFullName = patientWithDoctor.doctorDetail
-        ? `${patientWithDoctor.doctorDetail.lastName} ${patientWithDoctor.doctorDetail.firstName}`
-        : '';
-      return patientWithDoctor;
-    });
+  getPatientsWithDoctors(): Observable<PatientWithDoctor[]> {
+    return of(PATIENTS_WITH_DOCTORS);
   }
+
+  getPatientWithDoctors(id: number): Observable<PatientWithDoctor> {
+    return of(PATIENTS_WITH_DOCTORS.find(patient => patient.id === id));
+  }
+
+  mapDoctorFullName(patient: PatientWithDoctor): PatientWithDoctorAndFullName {
+    return {
+      ...patient,
+      doctorFullName: `${patient.doctor.lastName} ${patient.doctor.firstName}`
+    };
+  }
+
 }
