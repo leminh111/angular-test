@@ -1,0 +1,44 @@
+<div>
+  <h2>Add Patient</h2>
+  <form [formGroup]="addPatientForm" (ngSubmit)="submitForm()">
+
+    <label>
+      First Name:
+      <input type="text" formControlName="firstName">
+    </label>
+
+    <label>
+      Last Name:
+      <input type="text" formControlName="lastName">
+    </label>
+
+    <div formArrayName="addresses">
+      <h3>Address</h3>
+      <button type="button" (click)="addAddress()">Add Address</button>
+
+      <div *ngFor="let address of addresses.controls; let i = index;" [formGroupName]="i">
+        <button type="button" (click)="removeAddress(i)">Remove Address</button>
+        <label>
+          Street:
+          <input type="text" formControlName="street">
+        </label>
+
+        <label>
+          City:
+          <input type="text" formControlName="city">
+        </label>
+
+        <label>
+          State:
+          <input type="text" formControlName="state">
+        </label>
+
+        <label>
+          Zip Code:
+          <input type="text" formControlName="zip">
+        </label>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+</div>
