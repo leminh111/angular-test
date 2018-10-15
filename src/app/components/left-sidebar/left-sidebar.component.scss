@@ -1,12 +1,16 @@
 @import "../../../variables";
-@import "../../../mixin";
 
-.navbar {
-  background-color: green;
-  padding-top: $header-height;
-  padding-bottom: $footer-height;
+nav {
+  display: block;
+  padding: $header-height 0 $footer-height;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 100%;
   width: $sidebar-width;
+  z-index: 9;
+  @include box-shadow;
 }
 
 .navbar-header {
@@ -16,230 +20,46 @@
 .navbar-brand {
   display: block;
   padding: 0px 9px 0px;
-  img {
-    width: 36px;
-  }
-  & + .text-small {
-    font-size: 8px!important;
-    margin-top: 4px;
-  }
-}
 
-
-@keyframes rippleNavigation {
-  to {
-    -moz-transform: translate(-50%,-50%) scale(10);
-    transform: translate(-50%,-50%) scale(10);
-    opacity: 0;
-  }
-}
-
-.ripple {
-  background-color: rgba(247, 249, 252, 1);
-  border-radius:100%;
-  -moz-animation: rippleNavigation 2s ease-out;
-  animation: rippleNavigation 2s ease-out;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -moz-transform: translate(-50%,-50%) scale(0);
-  transform: translate(-50%,-50%) scale(0);
-}
-
-
-
-.navbar-static-left {
-  position: fixed;
-  left: 0px;
-  top: 0;
-  z-index: 9;
   img {
     display: block;
+    width: 25px;
+    margin: auto;
   }
-  .navbar-nav {
-    list-style: none;
-    padding: 0;
+}
+
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: block;
+    position: relative;
+
     a {
+      background: rgba(30, 45, 65, 0.04);
+      text-decoration: none;
       cursor: pointer;
       padding: 0;
       width: 40px;
-      //transition: background  0.2s linear 0.2s;
       height: 40px;
-      margin: 0px auto;
+      margin: 0 auto;
       border-radius: 50%;
       display: block;
       background: white;
-      color: $app-label-color;
+      color: rgba(30, 45, 65, 0.54);
       position: relative;
       overflow: hidden;
-      /* &:after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          display: block;
-          left: 50%;
-          width: 20px;
-          height: 20px;
-          background: rgba(247, 249, 252, 0.8);
-          opacity: 0;
-          z-index:1;
-          border-radius: 50%;
-          transform: scale(0, 0) translate(-50%, -50%);
-          transform-origin: 0 0;
-          pointer-events: none;
-      } */
-      [class^="icon-"],
-      [class*=" icon-"] {
-        font-size: 14px;
+
+      i {
+        font-size: 24px;
         position: absolute;
         top: 50%;
         left: 50%;
-        z-index:2;
-        transform: translate(-50%, -50%);
-      }
-      .icon-search {
-        font-size: 16px;
-      }
-      &:hover {
-        background: $app-link-color;
-        [class^="icon-"],
-        [class*=" icon-"] {
-          color: white;
-        }
-        /*  &:active {
-             background: #d0d4f4;
-             &:after {
-                 animation: ripple 2s linear;
-             }
-             [class^="icon-"],
-             [class*=" icon-"] {
-                 color: $app-link-color;
-             }
-         } */
-      }
-      &:active {
-        [class^="icon-"],
-        [class*=" icon-"] {
-          color: $app-link-color;
-        }
-      }
-      &.active {
-        background: $app-grey-light;
-        text-decoration: none;
-        [class^="icon-"],
-        [class*=" icon-"] {
-          color: $app-link-color;
-        }
-        /*       &:hover:active {
-                   background: $app-grey-light;
-                  &:after {
-                      display: none;
-                  }
-              } */
+        z-index: 2;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%)
       }
     }
-  }
-  .profile-modal {
-    display: block;
-    position: absolute;
-    left: 50%;
-    bottom: 22px;
-    list-style: none;
-    padding: 0 0 16px;
-    margin: 0;
-    @include translateX(-50%);
-    display: none;
-    li {
-      a {
-        display: block;
-        width: 24px;
-        height: 24px;
-        margin: 4px auto;
-        line-height: 24px;
-        text-align: center;
-        border-radius: 50%;
-        background: #E9EEF4;
-        position: relative;
-        color: $app-label-color;
-        &:hover {
-          background: $app-link-color;
-          [class^="icon-"],
-          [class*=" icon-"] {
-            color: white;
-          }
-        }
-        [class^="icon-"],
-        [class*=" icon-"] {
-          font-size: 16px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-        }
-        .icon-Settings {
-          font-size: 24px;
-        }
-        .icon-Support {
-          font-size: 24px;
-        }
-      }
-    }
-  }
-
-  .profile {
-    position: absolute;
-    left: 50%;
-    bottom: 20px;
-    a {
-      color: rgba(30, 45, 65, 0.54);
-    }
-    @include translateX(-50%);
-    &.active {
-      .profile-modal {
-        display: block;
-      }
-    }
-  }
-  .avatar {
-    position: relative;
-    z-index: 100;
-    width: 36px;
-    height: 36px;
-    display: block;
-    border: none;
-  }
-}
-
-.width100 {
-  width: 100%!important
-}
-
-.modal-logout-poup {
-  .modal-dialog {
-    img {
-      display: inline;
-    }
-    max-width: 495px;
-  }
-  .modal {
-    background: rgba(246, 248, 251, 0.54);
-    display: block;
-    .modal-content {
-      border-top: 0;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      font-size: 16px;
-    }
-  }
-  .progress-bar {
-    transition: all 1s linear;
-    height: 4px;
-    background: $app-link-color;
-    border-radius: 6px 6px 6px 0;
-    position: relative;
-    top: 4px;
-    z-index: 2;
   }
 }

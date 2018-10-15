@@ -1,5 +1,6 @@
-<table appSortableTable (sorted)="onSorted($event)">
-  <thead>
+<div>
+  <table appSortableTable (sorted)="onSorted($event)">
+    <thead>
     <tr>
       <th app-sortable-column="lastName">Last Name</th>
       <th>First Name</th>
@@ -7,8 +8,8 @@
       <th app-sortable-column="doctorFullName">Doctor</th>
       <th>Home</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <tr *ngFor="let patient of patients" [routerLink]="['/patient', patient.id]">
       <td>{{patient.lastName}}</td>
       <td>{{patient.firstName}}</td>
@@ -18,5 +19,7 @@
         <div [outerHTML]="patient.addresses | address"></div>
       </td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
+

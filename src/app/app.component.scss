@@ -1,5 +1,7 @@
 @import "../variables";
 
 .main-content {
-  padding-left: $sidebar-width;
+  padding-top: $header-height + $container-padding-top;
+  padding-left: $sidebar-width + $container-padding-left;
+  padding-bottom: $footer-height + $container-padding-top;
 }
