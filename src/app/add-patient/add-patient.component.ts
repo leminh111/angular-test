@@ -15,15 +15,27 @@ export class AddPatientComponent implements OnInit {
   addPatientForm: FormGroup;
   doctors: Doctor[];
   filteredDoctors: Observable<Doctor[]>;
-  addressTypes = [
-    AddressType.SECOND_HOME, AddressType.WORK, AddressType.HOLIDAY_PLACE, AddressType.CLOSE_RELATIVE
-  ];
+  addressTypes = [ AddressType.SECOND_HOME, AddressType.WORK, AddressType.HOLIDAY_PLACE, AddressType.CLOSE_RELATIVE ];
 
   constructor(private doctorService: DoctorService) { }
 
   ngOnInit() {
     this.getDoctors();
     this.initForm();
+  }
+
+  handleAddressChange(index, { address_components, formatted_address }) {
+    this.addPatientForm.get(`addresses.${index}.street`).setValue(formatted_address);
+
+    address_components.forEach(component => {
+      if (component['types'].indexOf("administrative_area_level_1") > -1) {
+        this.addPatientForm.get(`addresses.${index}.city`).setValue(component['long_name']);
+      } else if (component['types'].indexOf("country") > -1) {
+        this.addPatientForm.get(`addresses.${index}.country`).setValue(component['long_name']);
+      } else if (component['types'].indexOf("postal_code") > -1) {
+        this.addPatientForm.get(`addresses.${index}.zipcode`).setValue(component['long_name']);
+      }
+    });
   }
 
   private _filter(value: string): Doctor[] {
