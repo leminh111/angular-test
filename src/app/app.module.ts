@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 import { AppComponent } from './app.component';
@@ -21,7 +22,6 @@ import { PatientsComponent } from './patients/patients.component';
 import { AddressPipe } from './address.pipe';
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
-import { GooglePlacesDirective } from './google-places.directive';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,6 @@ import { GooglePlacesDirective } from './google-places.directive';
     AddressPipe,
     PatientDetailComponent,
     AddPatientComponent,
-    GooglePlacesDirective
   ],
   imports: [
     BrowserModule,
@@ -48,6 +47,7 @@ import { GooglePlacesDirective } from './google-places.directive';
     MatTableModule,
     MatSortModule,
     MatCardModule,
+    MatButtonModule,
     GooglePlaceModule
   ],
   providers: [],

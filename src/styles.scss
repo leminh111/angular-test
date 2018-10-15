@@ -38,6 +38,10 @@ a {
     background-color: transparent;
 }
 
+button[mat-raised-button] {
+    font-weight: 400;
+}
+
 #container {
     min-height: 100%;
     position: relative;
