@@ -15,7 +15,7 @@
           </mat-form-field>
         </div>
         <div class="col-sm">
-          <mat-form-field>
+          <mat-form-field class="full-width">
             <input type="text" matInput placeholder="Doctor" formControlName="doctor" aria-label="Doctor" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDoctorName">
               <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor">
@@ -26,17 +26,18 @@
         </div>
       </div>
 
-      <div formArrayName="addresses" class="container">
+      <div formArrayName="addresses">
         <h2>Addresses</h2>
         <button mat-raised-button color="primary" type="button" (click)="addAddress()">Add Address</button>
 
         <div class="row">
           <div class="col vertical-padding-12" *ngFor="let address of addresses.controls; let i = index;" [formGroupName]="i">
             <mat-card>
+              <mat-card-title *ngIf="isHomeAddress(address.value.type)">{{address.value.type}}</mat-card-title>
               <mat-card-content>
                 <div class="row">
-                  <div class="col" *ngIf="checkIfFirstAddress(i)">
-                    <mat-form-field>
+                  <div class="col" *ngIf="!isHomeAddress(address.value.type)">
+                    <mat-form-field class="full-width">
                       <mat-select placeholder="Type" formControlName="type">
                         <mat-option *ngFor="let type of addressTypes" [value]="type">
                           {{type}}
@@ -45,20 +46,20 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col" *ngIf="address.value.type === 'HOME'">
-                    <mat-form-field>
+                  <div class="col" *ngIf="isWorkorCloseRelativeAddress(address.value.type)">
+                    <mat-form-field class="full-width">
                       <input matInput placeholder="Name" aria-label="Name" formControlName="name">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
-                    <mat-form-field>
+                    <mat-form-field class="full-width">
                       <input matInput placeholder="Email" aria-label="Email" formControlName="email">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
-                    <mat-form-field>
+                    <mat-form-field class="full-width">
                       <input matInput placeholder="Phone" aria-label="Phone" formControlName="phone">
                     </mat-form-field>
                   </div>
@@ -66,30 +67,30 @@
 
                 <div class="row">
                   <div class="col">
-                    <mat-form-field>
-                      <input disabled matInput ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+                    <mat-form-field class="full-width">
+                      <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
                     </mat-form-field>
                   </div>
 
                   <div class="col">
-                    <mat-form-field>
-                      <input disabled matInput placeholder="City" aria-label="City" formControlName="city">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="City" aria-label="City" formControlName="city">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
-                    <mat-form-field>
-                      <input disabled matInput placeholder="Zip code" aria-label="Zip code" formControlName="zipcode">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Zip code" aria-label="Zip code" formControlName="zipcode">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
-                    <mat-form-field>
-                      <input disabled matInput placeholder="Country" aria-label="Country" formControlName="country">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Country" aria-label="Country" formControlName="country">
                     </mat-form-field>
                   </div>
                 </div>
-                <button mat-raised-button color="warn" *ngIf="checkIfFirstAddress(i)" type="button" (click)="removeAddress(i)">Remove Address</button>
+                <button mat-raised-button color="warn" *ngIf="!isHomeAddress(address.value.type)" type="button" (click)="removeAddress(i)">Remove Address</button>
               </mat-card-content>
             </mat-card>
           </div>

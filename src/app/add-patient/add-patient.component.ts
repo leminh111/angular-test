@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DoctorService } from '../doctor.service';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Doctor } from '../doctor';
-import { Patient } from '../patient';
-import { Address } from '../address';
+import { AddressType } from '../address-type';
 
 @Component({
   selector: 'app-add-patient',
@@ -16,38 +15,18 @@ export class AddPatientComponent implements OnInit {
   addPatientForm: FormGroup;
   doctors: Doctor[];
   filteredDoctors: Observable<Doctor[]>;
-  // TODO
   addressTypes = [
-    'Second Home', 'Work', 'Holiday place', 'Close relative'
+    AddressType.SECOND_HOME, AddressType.WORK, AddressType.HOLIDAY_PLACE, AddressType.CLOSE_RELATIVE
   ];
-  firstAddress: Address = {
-    type: ['HOME'],
-    name: [],
-    email: [''],
-    phone: [''],
-    street: [''],
-    city: [''],
-    zipcode: [],
-    country: [''],
-  };
 
-  constructor(private fb: FormBuilder, private doctorService: DoctorService) { }
+  constructor(private doctorService: DoctorService) { }
 
   ngOnInit() {
     this.getDoctors();
     this.initForm();
-    this.filteredDoctors = this.addPatientForm.valueChanges
-      .pipe(
-        startWith<string | Doctor>(''),
-        map(value => {
-          const doctor = value.doctor ? value.doctor : '';
-          return typeof doctor === 'string' ? doctor : `${doctor.lastName} ${doctor.firstName}`;
-        }),
-        map(name => name ? this._filter(name) : this.doctors.slice())
-      );
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): Doctor[] {
     if (!this.doctors) { return []; }
     const filterValue = value.toLowerCase();
     return this.doctors.filter(option => {
@@ -61,18 +40,41 @@ export class AddPatientComponent implements OnInit {
   }
 
   initForm() {
-    this.addPatientForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      doctor: [],
-      addresses: this.fb.array([this.fb.group(this.firstAddress)]),
+    this.addPatientForm = new FormGroup({
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      doctor: new FormControl(),
+      addresses: new FormArray([
+        new FormGroup({
+          type: new FormControl(AddressType.HOME),
+          name: new FormControl(),
+          email: new FormControl(''),
+          phone: new FormControl(''),
+          street: new FormControl(''),
+          city: new FormControl({value: '', disabled: true}),
+          zipcode: new FormControl({value: '', disabled: true}),
+          country: new FormControl({value: '', disabled: true}),
+        })
+      ])
     });
+    this.filteredDoctors = this.doctor.valueChanges
+      .pipe(
+        startWith<string | Doctor>(''),
+        map(value => typeof value === 'string' ? value : `${value.lastName} ${value.firstName}`),
+        map(name => name ? this._filter(name) : this.doctors.slice())
+      );
   }
 
   addAddressGroup() {
-    return this.fb.group({
-      ...this.firstAddress,
-      type: ['']
+    return new FormGroup({
+      type: new FormControl(),
+      name: new FormControl(),
+      email: new FormControl(''),
+      phone: new FormControl(''),
+      street: new FormControl(''),
+      city: new FormControl({value: '', disabled: true}),
+      zipcode: new FormControl({value: '', disabled: true}),
+      country: new FormControl({value: '', disabled: true}),
     });
   }
 
@@ -84,8 +86,12 @@ export class AddPatientComponent implements OnInit {
     this.addresses.removeAt(index);
   }
 
-  checkIfFirstAddress(index) {
-    return index !== 0;
+  isHomeAddress(type) {
+    return type === AddressType.HOME;
+  }
+
+  isWorkorCloseRelativeAddress(type) {
+    return type === AddressType.WORK || type === AddressType.CLOSE_RELATIVE;
   }
 
   submitForm() {
@@ -99,6 +105,10 @@ export class AddPatientComponent implements OnInit {
 
   get addresses() {
     return this.addPatientForm.get('addresses') as FormArray;
+  }
+
+  get doctor() {
+    return this.addPatientForm.get('doctor');
   }
 
 }

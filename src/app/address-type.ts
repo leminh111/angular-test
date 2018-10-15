@@ -1,0 +1,7 @@
+export enum AddressType {
+  HOME = 'HOME',
+  SECOND_HOME = 'SECOND HOME',
+  WORK = 'WORK',
+  HOLIDAY_PLACE = 'HOLIDAY PLACE',
+  CLOSE_RELATIVE = 'CLOSE RELATIVE',
+}
