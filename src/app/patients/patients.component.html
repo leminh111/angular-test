@@ -1,6 +1,7 @@
 <div>
   <h1>List of patients</h1>
-  <table mat-table [dataSource]="dataSource" matSort class="full-width mat-elevation-z8">
+
+  <table mat-table [dataSource]="dataSource" matSort class="full-width mat-elevation-z8" style="min-width: 800px">
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
       <td class="pointer-cursor" mat-cell *matCellDef="let patient"> {{patient.lastName}} </td>

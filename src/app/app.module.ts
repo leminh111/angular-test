@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 import { AppComponent } from './app.component';
@@ -46,6 +47,7 @@ import { GooglePlacesDirective } from './google-places.directive';
     MatSelectModule,
     MatTableModule,
     MatSortModule,
+    MatCardModule,
     GooglePlaceModule
   ],
   providers: [],

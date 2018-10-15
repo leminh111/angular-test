@@ -1,21 +1,81 @@
 <div *ngIf="patient">
-  <h2>{{patient.name | uppercase}} Details</h2>
-  <div><span>id: </span>{{patient.id}}</div>
-  <div><span>Registration date: </span>{{patient.registeredDate}}</div>
-  <div><span>First name: </span>{{patient.firstName}}</div>
-  <div><span>Last name: </span>{{patient.lastName}}</div>
-  <div><span>Doctor: </span>{{patient.doctorFullName}}</div>
-  <div>
-    <span>Addresses:</span>
-    <div *ngFor="let address of patient.addresses">
-      <p><b>{{address.type}}</b></p>
-      <p>{{address.email}}</p>
-      <p>{{address.phone}}</p>
-      <p>{{address.street}}</p>
-      <!--TODO pipe for city, zipcode, country -->
-      <p>{{address.city}}</p>
-      <p>{{address.zipcode}}</p>
-      <p>{{address.country}}</p>
+  <h1>{{patient.name | uppercase}} Details</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <mat-form-field class="full-width">
+          <input disabled matInput placeholder="ID" aria-label="ID" value="{{patient.id}}">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field class="full-width">
+          <input disabled matInput placeholder="First name" aria-label="First name" value="{{patient.firstName}}">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field class="full-width">
+          <input disabled matInput placeholder="Last name" aria-label="Last name" value="{{patient.lastName}}">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <mat-form-field class="full-width">
+          <input disabled matInput placeholder="Doctor" aria-label="Doctor" value="{{patient.doctorFullName}}">
+        </mat-form-field>
+      </div>
+      <div class="col-sm">
+        <mat-form-field class="full-width">
+          <input disabled matInput placeholder="Registration date" aria-label="Registration date" value="{{patient.registeredDate | date}}">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>Addresses:</h2>
+
+    <div class="row">
+      <div class="col vertical-padding-12" *ngFor="let address of patient.addresses">
+        <mat-card>
+          <mat-card-title>{{address.type}}</mat-card-title>
+          <mat-card-content>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input disabled matInput placeholder="Email" aria-label="Email" value="{{address.email}}">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input disabled matInput placeholder="Phone" aria-label="Phone" value="{{address.phone}}">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input disabled matInput placeholder="Street" aria-label="Street" value="{{address.street}}">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input disabled matInput placeholder="City" aria-label="City" value="{{address.city}}">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input disabled matInput placeholder="Zip code" aria-label="Zip code" value="{{address.zipcode}}">
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input disabled matInput placeholder="Country" aria-label="Country" value="{{address.country}}">
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>
