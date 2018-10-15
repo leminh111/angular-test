@@ -1,47 +1,69 @@
 <div>
   <h2>Add Patient</h2>
   <form [formGroup]="addPatientForm" (ngSubmit)="submitForm()">
+    <mat-form-field>
+      <input matInput placeholder="First Name" aria-label="First Name" formControlName="firstName">
+    </mat-form-field>
 
-    <label>
-      First Name:
-      <input type="text" formControlName="firstName">
-    </label>
+    <mat-form-field>
+      <input matInput placeholder="Last Name" aria-label="Last Name" formControlName="lastName">
+    </mat-form-field>
 
-    <label>
-      Last Name:
-      <input type="text" formControlName="lastName">
-    </label>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Doctor" formControlName="doctor" aria-label="Doctor" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDoctorName">
+        <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor">
+          {{doctor.lastName + ' ' + doctor.firstName}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
 
     <div formArrayName="addresses">
       <h3>Address</h3>
       <button type="button" (click)="addAddress()">Add Address</button>
 
       <div *ngFor="let address of addresses.controls; let i = index;" [formGroupName]="i">
-        <button type="button" (click)="removeAddress(i)">Remove Address</button>
-        <input
-          google-place
-          type="text"
-          class="google-place-input"
-          placeholder="Type to search..">
-        <label>
-          Street:
-          <input type="text" formControlName="street">
-        </label>
+        <button *ngIf="checkIfFirstAddress(i)" type="button" (click)="removeAddress(i)">Remove Address</button>
 
-        <label>
-          City:
-          <input type="text" formControlName="city">
-        </label>
+        <mat-form-field *ngIf="checkIfFirstAddress(i)">
+          <mat-select placeholder="Type" formControlName="type">
+            <mat-option *ngFor="let type of addressTypes" [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        <label>
-          State:
-          <input type="text" formControlName="state">
-        </label>
+        <mat-form-field *ngIf="address.value.type === 'HOME'">
+          <input matInput placeholder="Name" aria-label="Name" formControlName="name">
+        </mat-form-field>
 
-        <label>
-          Zip Code:
-          <input type="text" formControlName="zip">
-        </label>
+        <mat-form-field>
+          <input matInput placeholder="Email" aria-label="Email" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Phone" aria-label="Phone" formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Type to search.." aria-label="Street" formControlName="street">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="City" aria-label="City" formControlName="city">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Zip code" aria-label="Zip code" formControlName="zipcode">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Country" aria-label="Country" formControlName="country">
+        </mat-form-field>
       </div>
     </div>
     <button type="submit">Submit</button>

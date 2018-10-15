@@ -1,5 +1,5 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
-import { } from '@types/googlemaps';
+// import { google } from '@types/googlemaps';
 
 @Directive({
   selector: '[appGooglePlaces]'
