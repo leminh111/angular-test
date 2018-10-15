@@ -18,6 +18,11 @@
 
       <div *ngFor="let address of addresses.controls; let i = index;" [formGroupName]="i">
         <button type="button" (click)="removeAddress(i)">Remove Address</button>
+        <input
+          google-place
+          type="text"
+          class="google-place-input"
+          placeholder="Type to search..">
         <label>
           Street:
           <input type="text" formControlName="street">

@@ -14,6 +14,7 @@ import { SortableColumnComponent } from './sortable-column/sortable-column.compo
 import { SortableTableDirective } from './sortable-table.directive';
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
+import { GooglePlacesDirective } from './google-places.directive';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AddPatientComponent } from './add-patient/add-patient.component';
     SortableColumnComponent,
     SortableTableDirective,
     PatientDetailComponent,
-    AddPatientComponent
+    AddPatientComponent,
+    GooglePlacesDirective
   ],
   imports: [
     BrowserModule,
