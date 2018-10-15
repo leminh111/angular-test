@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientWithDoctorAndFullName } from '../patient';
 import { PatientService } from '../patient.service';
-import { SortService } from '../sort.service';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-patients',
@@ -10,11 +10,12 @@ import { SortService } from '../sort.service';
 })
 export class PatientsComponent implements OnInit {
   patients: PatientWithDoctorAndFullName[];
+  columnsToDisplay: string[] = ['lastName', 'firstName', 'registeredDate', 'doctorFullName', 'address'];
+  dataSource;
 
-  constructor(
-    private patientService: PatientService,
-    private sortService: SortService,
-  ) { }
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private patientService: PatientService) { }
 
   ngOnInit() {
     this.getPatientsWithDoctors();
@@ -24,11 +25,9 @@ export class PatientsComponent implements OnInit {
     this.patientService.getPatientsWithDoctors()
       .subscribe(patients => {
         this.patients = patients.map(this.patientService.mapDoctorFullName);
+        this.dataSource = new MatTableDataSource(this.patients);
+        this.dataSource.sort = this.sort;
       });
-  }
-
-  onSorted(event): void {
-    this.sortService.sortObjectWithPropName(event.sortColumn, event.sortDirection, this.patients);
   }
 
 }

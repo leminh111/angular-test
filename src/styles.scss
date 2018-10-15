@@ -9,23 +9,31 @@ body {
     padding: 0;
     height: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
 body {
-    font-family: Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-family: "Source Sans Pro", Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
     margin: 0;
     background: linear-gradient(-225deg, #FBFDFF 0%, #F5F8FB 100%);
+}
 
-    a {
-        cursor: pointer;
-        color: $highlight;
-    }
+h1 {
+    font-weight: 500;
+    font-size: 28px;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 20px;
 }
 
 a {
+    cursor: pointer;
+    color: $highlight;
     text-decoration: none;
     background-color: transparent;
 }
@@ -36,7 +44,14 @@ a {
 }
 
 .address-string {
+    padding-top: 12px;
+    padding-bottom: 12px;
+
     span {
         display: block;
     }
+}
+
+.full-width {
+    width: 100%;
 }

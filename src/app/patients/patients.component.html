@@ -1,25 +1,30 @@
 <div>
-  <table appSortableTable (sorted)="onSorted($event)">
-    <thead>
-    <tr>
-      <th app-sortable-column="lastName">Last Name</th>
-      <th>First Name</th>
-      <th app-sortable-column="registeredDate">Registration date</th>
-      <th app-sortable-column="doctorFullName">Doctor</th>
-      <th>Home</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let patient of patients" [routerLink]="['/patient', patient.id]">
-      <td>{{patient.lastName}}</td>
-      <td>{{patient.firstName}}</td>
-      <td>{{patient.registeredDate | date}}</td>
-      <td>{{patient.doctorFullName}}</td>
-      <td class="address-string">
-        <div [outerHTML]="patient.addresses | address"></div>
+  <h1>List of patients</h1>
+  <table mat-table [dataSource]="dataSource" matSort class="full-width mat-elevation-z8">
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+      <td class="pointer-cursor" mat-cell *matCellDef="let patient"> {{patient.lastName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef>First Name</th>
+      <td class="pointer-cursor" mat-cell *matCellDef="let patient"> {{patient.firstName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="registeredDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Registration Date</th>
+      <td class="pointer-cursor" mat-cell *matCellDef="let patient"> {{patient.registeredDate | date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="doctorFullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
+      <td class="pointer-cursor" mat-cell *matCellDef="let patient"> {{patient.doctorFullName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Home</th>
+      <td mat-cell *matCellDef="let patient">
+        <div (click)="$event.stopPropagation()" class="address-string" [innerHTML]="patient.addresses | address"></div>
       </td>
-    </tr>
-    </tbody>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let patient; columns: columnsToDisplay;" [routerLink]="['/patient', patient.id]"></tr>
   </table>
 </div>
-

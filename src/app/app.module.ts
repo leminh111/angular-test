@@ -6,6 +6,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 
 import { AppComponent } from './app.component';
@@ -16,8 +18,6 @@ import { LeftSidebarComponent } from './components/left-sidebar/left-sidebar.com
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PatientsComponent } from './patients/patients.component';
 import { AddressPipe } from './address.pipe';
-import { SortableColumnComponent } from './sortable-column/sortable-column.component';
-import { SortableTableDirective } from './sortable-table.directive';
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
 import { GooglePlacesDirective } from './google-places.directive';
@@ -31,8 +31,6 @@ import { GooglePlacesDirective } from './google-places.directive';
     DashboardComponent,
     PatientsComponent,
     AddressPipe,
-    SortableColumnComponent,
-    SortableTableDirective,
     PatientDetailComponent,
     AddPatientComponent,
     GooglePlacesDirective
@@ -46,6 +44,8 @@ import { GooglePlacesDirective } from './google-places.directive';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatTableModule,
+    MatSortModule,
     GooglePlaceModule
   ],
   providers: [],

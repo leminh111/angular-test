@@ -1,7 +1,10 @@
 @import "../variables";
 
 .main-content {
+  height: 100vh;
+  overflow: auto;
   padding-top: $header-height + $container-padding-top;
   padding-left: $sidebar-width + $container-padding-left;
+  padding-right: $container-padding-left;
   padding-bottom: $footer-height + $container-padding-top;
 }
