@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PatientWithDoctorAndFullName } from '../patient';
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from '../patient.service';
+import { PatientWithDoctor } from '../patient';
 
 @Component({
   selector: 'app-patient-detail',
@@ -27,7 +28,7 @@ export class PatientDetailComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.patientService.getPatientWithDoctors(id)
       .subscribe(
-        patient => this.patient = this.patientService.mapDoctorFullName(patient),
+        patient => this.patient = this.patientService.mapDoctorFullName(patient as PatientWithDoctor),
         err => console.error('Observer got an error: ' + err),
         () => this.isLoading = false
       );

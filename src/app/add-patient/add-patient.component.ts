@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
@@ -126,7 +127,7 @@ export class AddPatientComponent implements OnInit {
         err => {
           console.error('Observer got an error: ' + err);
           this.doctors = [];
-          this.filteredDoctors = [];
+          this.filteredDoctors = of([]);
         }
       );
   }

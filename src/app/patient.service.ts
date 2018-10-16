@@ -20,8 +20,8 @@ export class PatientService {
       );
   }
 
-  getPatient(id: number): Observable<Patient> {
-    return this.http.get<Patient>(`${this.patientsUrl}/${id}`)
+  getPatient(id: number): Observable<any> {
+    return this.http.get(`${this.patientsUrl}/${id}`)
       .pipe(
         catchError(this.handleError('getPatient', []))
       );
@@ -34,18 +34,15 @@ export class PatientService {
       );
   }
 
-  getPatientWithDoctors(id: number): Observable<PatientWithDoctor> {
-    // return this.http.get<PatientWithDoctor>(`${this.patientsWithDoctorsUrl}/${id}`).pipe(
-    //   catchError(this.handleError<PatientWithDoctor>(`getHero id=${id}`))
-    // );
-    return this.http.get<PatientWithDoctor>(`${this.patientsWithDoctorsUrl}/${id}`)
+  getPatientWithDoctors(id: number) {
+    return this.http.get(`${this.patientsWithDoctorsUrl}/${id}`)
       .pipe(
         catchError(this.handleError('getPatientWithDoctors', []))
       );
   }
 
-  addPatient(patient: Patient): Observable<Patient> {
-    return this.http.post<Patient>(this.patientsUrl, patient)
+  addPatient(patient) {
+    return this.http.post(this.patientsUrl, patient)
       .pipe(
         catchError(this.handleError('addPatient', []))
       );
