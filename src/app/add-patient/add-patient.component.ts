@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DoctorService } from '../doctor.service';
+import { UtilitiesService } from '../utilities.service';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Doctor } from '../doctor';
@@ -17,7 +18,7 @@ export class AddPatientComponent implements OnInit {
   filteredDoctors: Observable<Doctor[]>;
   addressTypes = [ AddressType.SECOND_HOME, AddressType.WORK, AddressType.HOLIDAY_PLACE, AddressType.CLOSE_RELATIVE ];
 
-  constructor(private doctorService: DoctorService) { }
+  constructor(private doctorService: DoctorService, private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
     this.getDoctors();
@@ -53,20 +54,20 @@ export class AddPatientComponent implements OnInit {
 
   initForm() {
     this.addPatientForm = new FormGroup({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
       doctor: new FormControl(),
       addresses: new FormArray([
         new FormGroup({
           type: new FormControl(AddressType.HOME),
           name: new FormControl(),
-          email: new FormControl(''),
-          phone: new FormControl(''),
+          email: new FormControl('', [ Validators.required, Validators.email ]),
+          phone: new FormControl('', Validators.pattern('^\\+?[0-9\\s]+$')),
           street: new FormControl(''),
           city: new FormControl({value: '', disabled: true}),
           zipcode: new FormControl({value: '', disabled: true}),
           country: new FormControl({value: '', disabled: true}),
-        })
+        }, Validators.required)
       ])
     });
     this.filteredDoctors = this.doctor.valueChanges
@@ -75,14 +76,19 @@ export class AddPatientComponent implements OnInit {
         map(value => typeof value === 'string' ? value : `${value.lastName} ${value.firstName}`),
         map(name => name ? this._filter(name) : this.doctors.slice())
       );
+    this.addresses.controls.forEach(group => {
+      const phone = group.get('phone');
+      phone.valueChanges
+        .subscribe(value => phone.setValue(this.utilitiesService.masking(value), {emitEvent: false}));
+    });
   }
 
   addAddressGroup() {
     return new FormGroup({
       type: new FormControl(),
       name: new FormControl(),
-      email: new FormControl(''),
-      phone: new FormControl(''),
+      email: new FormControl('', Validators.email),
+      phone: new FormControl('', Validators.pattern('^\\+?[0-9\\s]+$')),
       street: new FormControl(''),
       city: new FormControl({value: '', disabled: true}),
       zipcode: new FormControl({value: '', disabled: true}),
@@ -121,6 +127,14 @@ export class AddPatientComponent implements OnInit {
 
   get doctor() {
     return this.addPatientForm.get('doctor');
+  }
+
+  get firstName() {
+    return this.addPatientForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.addPatientForm.get('lastName');
   }
 
 }

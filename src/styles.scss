@@ -42,6 +42,10 @@ button[mat-raised-button] {
     font-weight: 400;
 }
 
+.mat-form-field {
+    padding-bottom: 8px;
+}
+
 #container {
     min-height: 100%;
     position: relative;

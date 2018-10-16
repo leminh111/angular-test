@@ -2,21 +2,27 @@
   <h1>Add Patient</h1>
 
   <div class="container">
-    <form [formGroup]="addPatientForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="addPatientForm" (ngSubmit)="addPatientForm.valid && submitForm()">
       <div class="row">
         <div class="col-sm">
           <mat-form-field class="full-width">
-            <input matInput placeholder="First name" aria-label="First name" formControlName="firstName">
+            <input matInput type="text" placeholder="First name" aria-label="First name" formControlName="firstName">
+            <mat-error *ngIf="firstName.hasError('required')">
+              First name is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-sm">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Last name" aria-label="Last name" formControlName="lastName">
+            <input matInput type="text" placeholder="Last name" aria-label="Last name" formControlName="lastName">
+            <mat-error *ngIf="lastName.hasError('required')">
+              Last name is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-sm">
           <mat-form-field class="full-width">
-            <input type="text" matInput placeholder="Doctor" formControlName="doctor" aria-label="Doctor" [matAutocomplete]="auto">
+            <input matInput type="text" placeholder="Doctor" formControlName="doctor" aria-label="Doctor" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDoctorName">
               <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor">
                 {{doctor.lastName + ' ' + doctor.firstName}}
@@ -48,19 +54,28 @@
 
                   <div class="col" *ngIf="isWorkorCloseRelativeAddress(address.value.type)">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Name" aria-label="Name" formControlName="name">
+                      <input matInput type="text" placeholder="Name" aria-label="Name" formControlName="name">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Email" aria-label="Email" formControlName="email">
+                      <input matInput type="email" placeholder="Email" aria-label="Email" formControlName="email">
+                      <mat-error *ngIf="address.get('email').hasError('email') && !address.get('email').hasError('required')">
+                        Please enter a valid email address
+                      </mat-error>
+                      <mat-error *ngIf="address.get('email').hasError('required')">
+                        Email is <strong>required</strong>
+                      </mat-error>
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Phone" aria-label="Phone" formControlName="phone">
+                      <input matInput type="tel" placeholder="Phone (+390612345678)" aria-label="Phone" formControlName="phone">
+                      <mat-error *ngIf="address.get('phone').hasError('pattern')">
+                        Please enter a valid phone number (+390612345678)
+                      </mat-error>
                     </mat-form-field>
                   </div>
                 </div>
@@ -68,7 +83,7 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Type to search for address..." ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange(i, $event)"/>
+                      <input matInput type="text" placeholder="Type to search for address..." ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange(i, $event)"/>
                     </mat-form-field>
                   </div>
                 </div>
@@ -76,19 +91,19 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="City" aria-label="City" formControlName="city">
+                      <input matInput type="text" placeholder="City" aria-label="City" formControlName="city">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Zip code" aria-label="Zip code" formControlName="zipcode">
+                      <input matInput type="text" placeholder="Zip code" aria-label="Zip code" formControlName="zipcode">
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Country" aria-label="Country" formControlName="country">
+                      <input matInput type="text" placeholder="Country" aria-label="Country" formControlName="country">
                     </mat-form-field>
                   </div>
                 </div>
@@ -98,7 +113,7 @@
           </div>
         </div>
       </div>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" type="submit">Save</button>
     </form>
   </div>
 </div>
