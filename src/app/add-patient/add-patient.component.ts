@@ -75,9 +75,13 @@ export class AddPatientComponent implements OnInit {
 
   submitForm() {
     this.patientService.addPatient(this.addPatientForm.getRawValue())
-      .subscribe(() => {
-        this.openDialog('Successfully adding new patient');
-      });
+      .subscribe(
+        () => this.openDialog('Successfully adding new patient'),
+        err => {
+          console.error('Observer got an error: ' + err);
+          this.openDialog('Fail adding new patient');
+        }
+      );
   }
 
   openDialog(message) {
@@ -109,15 +113,22 @@ export class AddPatientComponent implements OnInit {
 
   getDoctors() {
     this.doctorService.getDoctors()
-      .subscribe(doctors => {
-        this.doctors = doctors;
-        this.filteredDoctors = this.doctor.valueChanges
-          .pipe(
-            startWith<string | Doctor>(''),
-            map(value => typeof value === 'string' ? value : `${value.lastName} ${value.firstName}`),
-            map(name => name ? this._filter(name) : this.doctors.slice())
-          );
-      });
+      .subscribe(
+        doctors => {
+          this.doctors = doctors;
+          this.filteredDoctors = this.doctor.valueChanges
+            .pipe(
+              startWith<string | Doctor>(''),
+              map(value => typeof value === 'string' ? value : `${value.lastName} ${value.firstName}`),
+              map(name => name ? this._filter(name) : this.doctors.slice())
+            );
+        },
+        err => {
+          console.error('Observer got an error: ' + err);
+          this.doctors = [];
+          this.filteredDoctors = [];
+        }
+      );
   }
 
   private _filter(value: string): Doctor[] {

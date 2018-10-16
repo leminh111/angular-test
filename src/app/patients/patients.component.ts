@@ -24,12 +24,15 @@ export class PatientsComponent implements OnInit {
 
   getPatientsWithDoctors(): void {
     this.patientService.getPatientsWithDoctors()
-      .subscribe(patients => {
-        this.patients = patients.map(this.patientService.mapDoctorFullName);
-        this.dataSource = new MatTableDataSource(this.patients);
-        this.dataSource.sort = this.sort;
-        this.isLoading = false;
-      });
+      .subscribe(
+        patients => {
+          this.patients = patients.map(this.patientService.mapDoctorFullName);
+          this.dataSource = new MatTableDataSource(this.patients);
+          this.dataSource.sort = this.sort;
+        },
+        err => console.error('Observer got an error: ' + err),
+        () => this.isLoading = false
+      );
   }
 
 }
