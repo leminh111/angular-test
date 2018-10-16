@@ -28,4 +28,5 @@
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let patient; columns: columnsToDisplay;" [routerLink]="['/patient', patient.id]"></tr>
   </table>
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
 </div>

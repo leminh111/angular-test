@@ -11,6 +11,7 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 export class PatientsComponent implements OnInit {
   patients: PatientWithDoctorAndFullName[];
   columnsToDisplay: string[] = ['lastName', 'firstName', 'registeredDate', 'doctorFullName', 'address'];
+  isLoading = true;
   dataSource;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -27,6 +28,7 @@ export class PatientsComponent implements OnInit {
         this.patients = patients.map(this.patientService.mapDoctorFullName);
         this.dataSource = new MatTableDataSource(this.patients);
         this.dataSource.sort = this.sort;
+        this.isLoading = false;
       });
   }
 

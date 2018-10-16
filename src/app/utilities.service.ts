@@ -27,4 +27,37 @@ export class UtilitiesService {
     return isZipcodeInRomeItaly || isInRomeBasedOnCityAndCountry
       ? null : {'notInRome': true};
   }
+
+  extractAddress(address_components) {
+    let value = {
+      city: '',
+      country: '',
+      zipcode: ''
+    };
+
+    // Since the address_components are returned sorted from street number to country,
+    // we get the city by first checking for locality up to administrative_area_level_1
+    const city = address_components.find(component => {
+      return component.types[0] === 'locality'
+        || component.types[0] === 'administrative_area_level_3'
+        || component.types[0] === 'administrative_area_level_2'
+        || component.types[0] === 'administrative_area_level_1';
+    });
+    value.city = city ? city.long_name : '';
+
+    address_components.forEach(component => {
+      const componentName = component.long_name;
+
+      switch (component.types[0]) {
+        case 'country':
+          value.country = componentName;
+          break;
+        case 'postal_code':
+          value.zipcode = componentName;
+          break;
+      }
+    });
+
+    return value;
+  }
 }

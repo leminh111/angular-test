@@ -12,6 +12,8 @@ export class PatientDetailComponent implements OnInit {
 
   @Input() patient: PatientWithDoctorAndFullName;
 
+  isLoading = true;
+
   constructor(
     private route: ActivatedRoute,
     private patientService: PatientService,
@@ -24,7 +26,10 @@ export class PatientDetailComponent implements OnInit {
   getPatientWithDoctors(): void {
     const id = +this.route.snapshot.paramMap.get('id');
     this.patientService.getPatientWithDoctors(id)
-      .subscribe(patient => this.patient = this.patientService.mapDoctorFullName(patient));
+      .subscribe(patient => {
+        this.patient = this.patientService.mapDoctorFullName(patient);
+        this.isLoading = false;
+      });
   }
 
 }

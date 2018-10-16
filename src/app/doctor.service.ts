@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Doctor } from './doctor';
-import { DOCTORS } from './mock-doctors';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
-  constructor() { }
+  private doctorsUrl = 'api/doctors';
+
+  constructor(private http: HttpClient) { }
 
   getDoctors(): Observable<Doctor[]> {
-      return of(DOCTORS);
+      return this.http.get<Doctor[]>(this.doctorsUrl);
   }
 }

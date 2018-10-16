@@ -10,7 +10,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -22,6 +27,8 @@ import { PatientsComponent } from './patients/patients.component';
 import { AddressPipe } from './address.pipe';
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { AddPatientComponent } from './add-patient/add-patient.component';
+import { InMemoryDataService } from './in-memory-data.service';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +41,7 @@ import { AddPatientComponent } from './add-patient/add-patient.component';
     AddressPipe,
     PatientDetailComponent,
     AddPatientComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,8 +56,18 @@ import { AddPatientComponent } from './add-patient/add-patient.component';
     MatSortModule,
     MatCardModule,
     MatButtonModule,
-    GooglePlaceModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    GooglePlaceModule,
+    HttpClientModule,
+    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+    // and returns simulated server responses.
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false }
+    )
   ],
+  entryComponents: [ConfirmDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

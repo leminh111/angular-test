@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from '../dialogs/confirm-dialog/confirm-dialog.component';
+import { PatientService } from '../patient.service';
 import { DoctorService } from '../doctor.service';
 import { UtilitiesService } from '../utilities.service';
 import { map, startWith } from 'rxjs/operators';
@@ -18,7 +22,13 @@ export class AddPatientComponent implements OnInit {
   filteredDoctors: Observable<Doctor[]>;
   addressTypes = [ AddressType.SECOND_HOME, AddressType.WORK, AddressType.HOLIDAY_PLACE, AddressType.CLOSE_RELATIVE ];
 
-  constructor(private doctorService: DoctorService, private utilitiesService: UtilitiesService) { }
+  constructor(
+    private patientService: PatientService,
+    private doctorService: DoctorService,
+    private utilitiesService: UtilitiesService,
+    private dialog: MatDialog,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.getDoctors();
@@ -26,53 +36,8 @@ export class AddPatientComponent implements OnInit {
   }
 
   handleAddressChange(index, { address_components }) {
-    let value = {
-      city: '',
-      country: '',
-      zipcode: ''
-    };
-
-    // Since the address_components are returned sorted from street number to country,
-    // we get the city by first checking for locality up to administrative_area_level_1
-    const city = address_components.find(component => {
-      return component.types[0] === 'locality'
-        || component.types[0] === 'administrative_area_level_3'
-        || component.types[0] === 'administrative_area_level_2'
-        || component.types[0] === 'administrative_area_level_1';
-    });
-    value.city = city ? city.long_name : '';
-
-    address_components.forEach(component => {
-      const componentName = component.long_name;
-
-      switch (component.types[0]) {
-        case 'country':
-          value.country = componentName;
-          break;
-        case 'postal_code':
-          value.zipcode = componentName;
-          break;
-      }
-    });
-
-    this.addPatientForm.get(`addresses.${index}`).patchValue(value);
-  }
-
-  private _filter(value: string): Doctor[] {
-    if (!this.doctors) { return []; }
-    const filterValue = value.toLowerCase();
-    return this.doctors.filter(option => {
-      const name = `${option.lastName} ${option.firstName}`;
-      return name.toLowerCase().includes(filterValue);
-    });
-  }
-
-  displayDoctorName(doctorId?: number): string | undefined {
-    let doctor;
-    if (doctorId) {
-      doctor = this.doctors.find(doctor => doctor.id === doctorId);
-    }
-    return doctor ? `${doctor.lastName} ${doctor.firstName}` : undefined;
+    const cityAddress = this.utilitiesService.extractAddress(address_components);
+    this.addPatientForm.get(`addresses.${index}`).patchValue(cityAddress);
   }
 
   initForm() {
@@ -84,12 +49,6 @@ export class AddPatientComponent implements OnInit {
         new FormGroup(this.addAddressControlGroup(AddressType.HOME), { validators: this.utilitiesService.inRomeValidator })
       ])
     });
-    this.filteredDoctors = this.doctor.valueChanges
-      .pipe(
-        startWith<string | Doctor>(''),
-        map(value => typeof value === 'string' ? value : `${value.lastName} ${value.firstName}`),
-        map(name => name ? this._filter(name) : this.doctors.slice())
-      );
     this.addresses.controls.forEach(group => {
       const phone = group.get('phone');
       phone.valueChanges
@@ -115,7 +74,21 @@ export class AddPatientComponent implements OnInit {
   }
 
   submitForm() {
-    console.log(this.addPatientForm.getRawValue());
+    this.patientService.addPatient(this.addPatientForm.getRawValue())
+      .subscribe(() => {
+        this.openDialog('Successfully adding new patient');
+      });
+  }
+
+  openDialog(message) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: { message }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate(['/']);
+    });
   }
 
   addAddress() {
@@ -136,7 +109,32 @@ export class AddPatientComponent implements OnInit {
 
   getDoctors() {
     this.doctorService.getDoctors()
-      .subscribe(doctors => this.doctors = doctors);
+      .subscribe(doctors => {
+        this.doctors = doctors;
+        this.filteredDoctors = this.doctor.valueChanges
+          .pipe(
+            startWith<string | Doctor>(''),
+            map(value => typeof value === 'string' ? value : `${value.lastName} ${value.firstName}`),
+            map(name => name ? this._filter(name) : this.doctors.slice())
+          );
+      });
+  }
+
+  private _filter(value: string): Doctor[] {
+    if (!this.doctors) { return []; }
+    const filterValue = value.toLowerCase();
+    return this.doctors.filter(option => {
+      const name = `${option.lastName} ${option.firstName}`;
+      return name.toLowerCase().includes(filterValue);
+    });
+  }
+
+  displayDoctorName(doctorId?: number): string | undefined {
+    let doctor;
+    if (doctorId) {
+      doctor = this.doctors.find(doctor => doctor.id === doctorId);
+    }
+    return doctor ? `${doctor.lastName} ${doctor.firstName}` : undefined;
   }
 
   get addresses() {
