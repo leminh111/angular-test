@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-sm">
           <mat-form-field class="full-width">
-            <input matInput type="text" placeholder="First name" aria-label="First name" formControlName="firstName">
+            <input matInput type="text" placeholder="First name" aria-label="First name" formControlName="firstName"/>
             <mat-error *ngIf="firstName.hasError('required')">
               First name is <strong>required</strong>
             </mat-error>
@@ -14,7 +14,7 @@
         </div>
         <div class="col-sm">
           <mat-form-field class="full-width">
-            <input matInput type="text" placeholder="Last name" aria-label="Last name" formControlName="lastName">
+            <input matInput type="text" placeholder="Last name" aria-label="Last name" formControlName="lastName"/>
             <mat-error *ngIf="lastName.hasError('required')">
               Last name is <strong>required</strong>
             </mat-error>
@@ -22,9 +22,9 @@
         </div>
         <div class="col-sm">
           <mat-form-field class="full-width">
-            <input matInput type="text" placeholder="Doctor" formControlName="doctor" aria-label="Doctor" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDoctorName">
-              <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor">
+            <input matInput type="text" placeholder="Doctor" formControlName="doctor" aria-label="Doctor" [matAutocomplete]="auto"/>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayDoctorName.bind(this)">
+              <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor.id">
                 {{doctor.lastName + ' ' + doctor.firstName}}
               </mat-option>
             </mat-autocomplete>
@@ -36,8 +36,8 @@
         <h2>Addresses</h2>
         <button mat-raised-button color="primary" type="button" (click)="addAddress()">Add Address</button>
 
-        <div class="row">
-          <div class="col vertical-padding-12" *ngFor="let address of addresses.controls; let i = index;" [formGroupName]="i">
+        <div class="row" *ngFor="let address of addresses.controls; let i = index;" [formGroupName]="i">
+          <div class="col vertical-padding-12">
             <mat-card>
               <mat-card-title *ngIf="isHomeAddress(address.value.type)">{{address.value.type}}</mat-card-title>
               <mat-card-content>
@@ -49,18 +49,21 @@
                           {{type}}
                         </mat-option>
                       </mat-select>
+                      <mat-error *ngIf="address.get('type').hasError('required')">
+                        Type is <strong>required</strong>
+                      </mat-error>
                     </mat-form-field>
                   </div>
 
                   <div class="col" *ngIf="isWorkorCloseRelativeAddress(address.value.type)">
                     <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Name" aria-label="Name" formControlName="name">
+                      <input matInput type="text" placeholder="Name" aria-label="Name" formControlName="name"/>
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput type="email" placeholder="Email" aria-label="Email" formControlName="email">
+                      <input matInput type="email" placeholder="Email" aria-label="Email" formControlName="email"/>
                       <mat-error *ngIf="address.get('email').hasError('email') && !address.get('email').hasError('required')">
                         Please enter a valid email address
                       </mat-error>
@@ -72,7 +75,7 @@
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput type="tel" placeholder="Phone (+390612345678)" aria-label="Phone" formControlName="phone">
+                      <input matInput type="tel" placeholder="Phone (+390612345678)" aria-label="Phone" formControlName="phone"/>
                       <mat-error *ngIf="address.get('phone').hasError('pattern')">
                         Please enter a valid phone number (+390612345678)
                       </mat-error>
@@ -83,7 +86,10 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Type to search for address..." ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange(i, $event)"/>
+                      <input matInput type="text" placeholder="Type to search for address..." formControlName="street" ngx-google-places-autocomplete #placesRef="ngx-places" (onAddressChange)="handleAddressChange(i, $event, $event)"/>
+                      <mat-error *ngIf="address.get('street').hasError('required')">
+                        Street is <strong>required</strong>
+                      </mat-error>
                     </mat-form-field>
                   </div>
                 </div>
@@ -91,22 +97,28 @@
                 <div class="row">
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="City" aria-label="City" formControlName="city">
+                      <input matInput type="text" placeholder="City" aria-label="City" formControlName="city"/>
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Zip code" aria-label="Zip code" formControlName="zipcode">
+                      <input matInput type="text" placeholder="Zip code" aria-label="Zip code" formControlName="zipcode"/>
                     </mat-form-field>
                   </div>
 
                   <div class="col">
                     <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Country" aria-label="Country" formControlName="country">
+                      <input readonly matInput type="text" placeholder="Country" aria-label="Country" formControlName="country"/>
+                      <mat-error *ngIf="address.get('country').hasError('required')">
+                        Country is <strong>required</strong>
+                      </mat-error>
                     </mat-form-field>
                   </div>
                 </div>
+                <mat-error *ngIf="address.errors?.notInRome && (address.touched || address.dirty)">
+                  This address is not in Rome, Italy
+                </mat-error>
                 <button mat-raised-button color="warn" *ngIf="!isHomeAddress(address.value.type)" type="button" (click)="removeAddress(i)">Remove Address</button>
               </mat-card-content>
             </mat-card>

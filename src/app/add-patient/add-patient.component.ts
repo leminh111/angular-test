@@ -25,18 +25,37 @@ export class AddPatientComponent implements OnInit {
     this.initForm();
   }
 
-  handleAddressChange(index, { address_components, formatted_address }) {
-    this.addPatientForm.get(`addresses.${index}.street`).setValue(formatted_address);
+  handleAddressChange(index, { address_components }) {
+    let value = {
+      city: '',
+      country: '',
+      zipcode: ''
+    };
+
+    // Since the address_components are returned sorted from street number to country,
+    // we get the city by first checking for locality up to administrative_area_level_1
+    const city = address_components.find(component => {
+      return component.types[0] === 'locality'
+        || component.types[0] === 'administrative_area_level_3'
+        || component.types[0] === 'administrative_area_level_2'
+        || component.types[0] === 'administrative_area_level_1';
+    });
+    value.city = city ? city.long_name : '';
 
     address_components.forEach(component => {
-      if (component['types'].indexOf("administrative_area_level_1") > -1) {
-        this.addPatientForm.get(`addresses.${index}.city`).setValue(component['long_name']);
-      } else if (component['types'].indexOf("country") > -1) {
-        this.addPatientForm.get(`addresses.${index}.country`).setValue(component['long_name']);
-      } else if (component['types'].indexOf("postal_code") > -1) {
-        this.addPatientForm.get(`addresses.${index}.zipcode`).setValue(component['long_name']);
+      const componentName = component.long_name;
+
+      switch (component.types[0]) {
+        case 'country':
+          value.country = componentName;
+          break;
+        case 'postal_code':
+          value.zipcode = componentName;
+          break;
       }
     });
+
+    this.addPatientForm.get(`addresses.${index}`).patchValue(value);
   }
 
   private _filter(value: string): Doctor[] {
@@ -48,7 +67,11 @@ export class AddPatientComponent implements OnInit {
     });
   }
 
-  displayDoctorName(doctor?: Doctor): string | undefined {
+  displayDoctorName(doctorId?: number): string | undefined {
+    let doctor;
+    if (doctorId) {
+      doctor = this.doctors.find(doctor => doctor.id === doctorId);
+    }
     return doctor ? `${doctor.lastName} ${doctor.firstName}` : undefined;
   }
 
@@ -58,16 +81,7 @@ export class AddPatientComponent implements OnInit {
       lastName: new FormControl('', Validators.required),
       doctor: new FormControl(),
       addresses: new FormArray([
-        new FormGroup({
-          type: new FormControl(AddressType.HOME),
-          name: new FormControl(),
-          email: new FormControl('', [ Validators.required, Validators.email ]),
-          phone: new FormControl('', Validators.pattern('^\\+?[0-9\\s]+$')),
-          street: new FormControl(''),
-          city: new FormControl({value: '', disabled: true}),
-          zipcode: new FormControl({value: '', disabled: true}),
-          country: new FormControl({value: '', disabled: true}),
-        }, Validators.required)
+        new FormGroup(this.addAddressControlGroup(AddressType.HOME), { validators: this.utilitiesService.inRomeValidator })
       ])
     });
     this.filteredDoctors = this.doctor.valueChanges
@@ -79,21 +93,29 @@ export class AddPatientComponent implements OnInit {
     this.addresses.controls.forEach(group => {
       const phone = group.get('phone');
       phone.valueChanges
-        .subscribe(value => phone.setValue(this.utilitiesService.masking(value), {emitEvent: false}));
+        .subscribe(value => phone.setValue(this.utilitiesService.masking(value), { emitEvent: false }));
     });
   }
 
   addAddressGroup() {
-    return new FormGroup({
-      type: new FormControl(),
-      name: new FormControl(),
-      email: new FormControl('', Validators.email),
+    return new FormGroup(this.addAddressControlGroup());
+  }
+
+  addAddressControlGroup(addressType = '') {
+    return {
+      type: new FormControl(addressType, Validators.required),
+      name: new FormControl(''),
+      email: new FormControl('', [ Validators.required, Validators.email ]),
       phone: new FormControl('', Validators.pattern('^\\+?[0-9\\s]+$')),
-      street: new FormControl(''),
+      street: new FormControl('', Validators.required),
       city: new FormControl({value: '', disabled: true}),
       zipcode: new FormControl({value: '', disabled: true}),
       country: new FormControl({value: '', disabled: true}),
-    });
+    };
+  }
+
+  submitForm() {
+    console.log(this.addPatientForm.getRawValue());
   }
 
   addAddress() {
@@ -110,10 +132,6 @@ export class AddPatientComponent implements OnInit {
 
   isWorkorCloseRelativeAddress(type) {
     return type === AddressType.WORK || type === AddressType.CLOSE_RELATIVE;
-  }
-
-  submitForm() {
-    console.log(this.addPatientForm.value);
   }
 
   getDoctors() {
