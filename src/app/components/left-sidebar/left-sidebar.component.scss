@@ -63,3 +63,19 @@ nav {
     }
   }
 }
+
+.router-link {
+  border-radius: 50%;
+
+  &.active {
+    background-color: rgba(30, 45, 65, 0.08) !important;
+
+    i {
+      color: $highlight;
+    }
+  }
+
+  &:hover i {
+    color: $highlight;
+  }
+}
