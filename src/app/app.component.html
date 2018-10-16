@@ -1,8 +1,10 @@
 <div id="container">
     <app-header></app-header>
     <app-left-sidebar></app-left-sidebar>
-    <div class="main-content">
-        <router-outlet></router-outlet>
+    <div class="main-content-wrapper">
+        <div class="main-content">
+            <router-outlet></router-outlet>
+        </div>
+        <app-footer></app-footer>
     </div>
-    <app-footer></app-footer>
 </div>
